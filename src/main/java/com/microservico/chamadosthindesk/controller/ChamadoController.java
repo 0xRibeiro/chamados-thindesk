@@ -14,6 +14,7 @@ import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/chamados")
@@ -65,5 +66,14 @@ public class ChamadoController {
         }
 
         return chamado;
+    }
+
+    // metodo da resolucao de chamados por usuarios tecnicos
+    @PutMapping("/{id}/resolver")
+    public Chamado resolverChamado(@PathVariable("id") String id,
+                                   @RequestBody Chamado dados) {
+
+        // utiliza apenas a solução recebida; status e data são definidos pela service
+        return chamadoService.resolverChamado(id, dados.getSolucao());
     }
 }
