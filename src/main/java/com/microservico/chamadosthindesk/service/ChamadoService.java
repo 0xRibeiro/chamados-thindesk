@@ -15,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Instant;
 import java.util.List;
+import org.bson.Document;
 
 // regras de abertura, consulta e resolução dos chamados
 @Service
@@ -75,5 +76,20 @@ public class ChamadoService {
         }
 
         return chamadoResolvido;
+    }
+
+    // encontra o id da conta ativa pelo email da sessão e com o usuario ativo obrigatoriamente
+    public String buscarUsuarioId(String email) {
+        Query consulta = new Query(Criteria.where("email").is(email).and("ativo").is(true));
+        consulta.fields().include("_id");
+
+        Document usuario = mongoTemplate.findOne(consulta, Document.class, "usuarios");
+
+        if (usuario == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    "Usuário não encontrado ou inativo.");
+        }
+
+        return usuario.get("_id").toString();
     }
 }

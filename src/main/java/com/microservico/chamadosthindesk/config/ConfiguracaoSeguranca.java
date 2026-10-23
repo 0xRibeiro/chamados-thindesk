@@ -9,6 +9,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 // usa as sessoes do MongoDB
+@Configuration
 @EnableMongoHttpSession
 public class ConfiguracaoSeguranca {
 
@@ -18,7 +19,7 @@ public class ConfiguracaoSeguranca {
         .requestMatchers("/error").permitAll()
         .anyRequest().authenticated()).exceptionHandling(erros
         -> erros.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
-        // retorna 401 quando uma requisição exige autenticação
+        // retorna 401 quando uma requisição não está autenticada/autorizada
 
         return http.build();
     }
