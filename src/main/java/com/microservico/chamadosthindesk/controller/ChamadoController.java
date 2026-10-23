@@ -48,4 +48,22 @@ public class ChamadoController {
 
         return chamadoService.listarChamadosPorUsuario(id);
     }
+
+    // metodo da rota de consulta de chamado individual
+    @GetMapping("/{id}")
+    public Chamado consultarChamado(@PathVariable("id") String id, Authentication autenticacao) {
+
+        // identifica o usuario que está fazendo a consulta
+        String autorChamadoId = chamadoService.buscarUsuarioId(autenticacao.getName());
+
+        // busca o chamado ou retorna 404 se ele não existir
+        Chamado chamado = chamadoService.buscarChamado(id);
+
+        // permite que o usuario consulte apenas os seus chamados
+        if (!autorChamadoId.equals(chamado.getAutorChamadoId())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Você só pode consultar seus próprios chamados.");
+        }
+
+        return chamado;
+    }
 }
