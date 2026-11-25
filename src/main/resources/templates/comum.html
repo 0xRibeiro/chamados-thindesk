@@ -1,20 +1,60 @@
 <!DOCTYPE html>
 <html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <link rel="stylesheet" th:href="@{/css/estilo.css}">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Area do Usuario</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ThinDesk - Meus chamados</title>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
 </head>
 <body>
 
-<h1>Area do Usuario Comum</h1>
+<main>
+    <h1>ThinDesk</h1>
+    <h2>Meus chamados</h2>
 
-<p>Voce entrou no sistema com sucesso.</p>
+    <h3>Abrir novo chamado</h3>
 
-<form th:action="@{/logout}" method="post">
-    <button type="submit">Sair</button>
-</form>
+    <form th:action="@{/comum/chamados}"
+          th:object="${novoChamado}" method="post">
+
+        <input type="text" th:field="*{titulo}"
+               placeholder="Título do chamado" required>
+
+        <textarea th:field="*{descricao}"
+                  placeholder="Descreva o problema"
+                  required></textarea>
+
+        <button type="submit">Abrir chamado</button>
+    </form>
+
+    <h3>Histórico de chamados</h3>
+
+    <p th:if="${#lists.isEmpty(chamados)}">
+        Você ainda não possui chamados.
+    </p>
+
+    <table th:if="${!#lists.isEmpty(chamados)}">
+        <thead>
+        <tr>
+            <th>Título</th>
+            <th>Status</th>
+            <th>Solução</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="chamado : ${chamados}">
+            <td th:text="${chamado.titulo}"></td>
+            <td th:text="${chamado.status}"></td>
+            <td th:text="${chamado.solucao}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">Sair</button>
+    </form>
+</main>
 
 </body>
 </html>

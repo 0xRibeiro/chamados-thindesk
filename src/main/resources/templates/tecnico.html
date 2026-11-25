@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ThinDesk - Técnico</title>
+  <link rel="stylesheet" th:href="@{/css/estilo.css}">
+</head>
+<body>
+
+<main>
+  <h1>ThinDesk</h1>
+  <h2>Painel do técnico</h2>
+
+  <h3>Chamados pendentes</h3>
+
+  <p th:if="${#lists.isEmpty(chamados)}">
+    Não existem chamados pendentes.
+  </p>
+
+  <table th:if="${!#lists.isEmpty(chamados)}">
+    <thead>
+    <tr>
+      <th>Título</th>
+      <th>Descrição</th>
+      <th>Resolver</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="chamado : ${chamados}">
+      <td th:text="${chamado.titulo}"></td>
+      <td th:text="${chamado.descricao}"></td>
+      <td>
+        <form th:action="@{/tecnico/chamados/{id}/resolver(id=${chamado.id})}"
+              method="post">
+
+          <input type="text" name="solucao"
+                 placeholder="Solução" required>
+
+          <button type="submit">Resolver</button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <form th:action="@{/logout}" method="post">
+    <button type="submit">Sair</button>
+  </form>
+</main>
+
+</body>
+</html>
