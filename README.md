@@ -1,5 +1,7 @@
 # ThinDesk
 
+![Dashboard do ThinDesk](dashboard.png)
+
 Sistema web de gerenciamento de chamados técnicos, desenvolvido para facilitar a abertura, acompanhamento e resolução de solicitações de suporte.
 
 ## Tecnologias utilizadas
