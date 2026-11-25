@@ -53,7 +53,7 @@ public class UsuarioService {
     public Usuario alterarPapel(String id, String papel) {
 
         if (!papel.equals("UsuarioComum")
-                && !papel.equals("UsuarioVIP")
+                && !papel.equals("UsuarioTecnico")
                 && !papel.equals("Admin")) {
             throw new IllegalArgumentException("Papel invalido.");
         }
