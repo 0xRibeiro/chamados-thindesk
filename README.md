@@ -35,12 +35,6 @@ O sistema possui três perfis:
 | UsuarioTecnico | Visualizar e resolver chamados. |
 | Admin | Acessar o dashboard e gerenciar usuários. |
 
-## Dashboard
-
-O painel administrativo apresenta informações sobre os chamados cadastrados, permitindo visualizar a quantidade total, os chamados abertos e os resolvidos, além de sua distribuição em gráfico.
-
-![Dashboard do ThinDesk](docs/dashboard.png)
-
 ## Versionamento
 
 O projeto utiliza o padrão **SemVer**, composto pelo formato `MAJOR.MINOR.PATCH`.
