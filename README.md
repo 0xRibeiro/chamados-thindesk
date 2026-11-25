@@ -60,16 +60,9 @@ A versão atual do sistema é **1.0.0**.
 
 ## Aplicação publicada
 
-**Acesse:** [INSERIR LINK DO DEPLOY]
+**Acesse:** https://chamados-thindesk.onrender.com
 
 A aplicação possui cadastro público, permitindo que qualquer pessoa crie uma conta e acesse as funcionalidades.
-
-### Credenciais de demonstração
-
-Utilize uma conta de demonstração para acessar a aplicação:
-
-- **E-mail:** INSERIR E-MAIL
-- **Senha:** INSERIR SENHA
 
 ## Como executar localmente
 
