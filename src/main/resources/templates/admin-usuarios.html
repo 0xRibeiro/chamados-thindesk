@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" th:href="@{/css/estilo.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Usuarios</title>
+</head>
+<body class="vip">
+
+<h1>Usuarios cadastrados</h1>
+
+<p th:if="${mensagem}" th:text="${mensagem}"></p>
+<p th:if="${erro}" th:text="${erro}"></p>
+
+<table class="vip">
+    <thead>
+    <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Papel atual</th>
+        <th>Alterar papel</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="usuario : ${usuarios}">
+        <td th:text="${usuario.nome}"></td>
+        <td th:text="${usuario.email}"></td>
+        <td th:text="${usuario.papel}"></td>
+        <td>
+            <form th:action="@{/admin/usuarios/papel}" method="post">
+                <input type="hidden" name="id" th:value="${usuario.id}">
+
+                <select name="papel">
+                    <option value="UsuarioComum"
+                            th:selected="${usuario.papel == 'UsuarioComum'}">
+                        Usuario comum
+                    </option>
+                    <option value="UsuarioVIP"
+                            th:selected="${usuario.papel == 'UsuarioVIP'}">
+                        Usuario VIP
+                    </option>
+                    <option value="Admin"
+                            th:selected="${usuario.papel == 'Admin'}">
+                        Administrador
+                    </option>
+                </select>
+
+                <button class="vip" type="submit">Salvar</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<p><a th:href="@{/admin/inicio}">Voltar ao painel administrativo</a></p>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Sair</button>
+</form>
+
+</body>
+</html>
