@@ -113,3 +113,19 @@ mvnw.cmd spring-boot:run
 ```text
 http://localhost:8080
 ```
+
+
+
+CONTAS PARA TESTES:
+
+Usuário Normal:
+  Email: UsuarioNormal@gmail.com
+  Senha: RJ745eMxXiyjJ7BxKyj6pTm3h
+
+Usuário Tecnico
+  Email: UsuarioTecnico@gmail.com
+  Senha: 8bQ9iJKMbcE7kqTGCsa4XPw3X
+
+Admin:
+  Email: admin@sistema.com
+  Senha: 4wA1PzFGsPtUw1Vw5EeRBiXXA
