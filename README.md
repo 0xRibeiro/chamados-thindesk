@@ -1,83 +1,126 @@
-# Chamados ThinDesk
+# ThinDesk
 
-Microserviço de chamados técnicos desenvolvido com Java 21, Spring Boot e MongoDB. Reutiliza a autenticação do Login-Seguro por sessões compartilhadas no MongoDB.
+Sistema web de gerenciamento de chamados técnicos, desenvolvido para facilitar a abertura, acompanhamento e resolução de solicitações de suporte.
 
-## Como executar
+## Tecnologias utilizadas
 
-É necessário ter Java 21, acesso ao MongoDB e o Login-Seguro funcionando com sessões no MongoDB e o perfil `UsuarioTecnico`.
+- **Java 21** — Linguagem de programação.
+- **Spring Boot** — Desenvolvimento da aplicação.
+- **Spring Security** — Autenticação e controle de acesso.
+- **Thymeleaf** — Renderização das páginas web.
+- **MongoDB Atlas** — Armazenamento dos dados.
+- **Bootstrap 5** — Estilização da interface.
+- **Chart.js** — Criação dos gráficos do dashboard.
+- **Maven** — Gerenciamento de dependências e compilação.
 
-Crie um arquivo `.env` na raiz do projeto:
+## Funcionalidades
 
-```properties
-MONGODB_URI=mongodb+srv://USUARIO:SENHA@SEU_CLUSTER/
+- Cadastro de usuários.
+- Autenticação segura com Spring Security.
+- Proteção de senhas utilizando BCrypt.
+- Controle de acesso por diferentes perfis.
+- Abertura de chamados técnicos.
+- Consulta e acompanhamento de chamados.
+- Resolução de chamados por técnicos.
+- Dashboard administrativo com indicadores e gráficos.
+- Gerenciamento de usuários.
+
+## Perfis de acesso
+
+O sistema possui três perfis:
+
+| Perfil | Permissões |
+|---|---|
+| UsuarioComum | Abrir e acompanhar seus chamados. |
+| UsuarioTecnico | Visualizar e resolver chamados. |
+| Admin | Acessar o dashboard e gerenciar usuários. |
+
+## Dashboard
+
+O painel administrativo apresenta informações sobre os chamados cadastrados, permitindo visualizar a quantidade total, os chamados abertos e os resolvidos, além de sua distribuição em gráfico.
+
+![Dashboard do ThinDesk](docs/dashboard.png)
+
+## Versionamento
+
+O projeto utiliza o padrão **SemVer**, composto pelo formato `MAJOR.MINOR.PATCH`.
+
+O desenvolvimento foi iniciado na versão **0.5.0**,pois já tinha certas funcionalidades.
+
+Após a implementação e validação das funcionalidades principais, o sistema passou para a versão **1.0.0**, representando sua primeira versão estável.
+
+O padrão de versionamento segue os seguintes critérios:
+
+- **MAJOR:** incrementado quando são realizadas alterações maiores.
+- **MINOR:** incrementado quando novas funcionalidades são adicionadas mantendo a compatibilidade.
+- **PATCH:** incrementado quando são realizadas correções de erros sem introduzir novas funcionalidades incompatíveis.
+
+### Histórico de versões
+
+| Versão | Descrição |
+|---|---|
+| 0.5.0 | Versão inicial de desenvolvimento, antes da integração completa dos módulos. |
+| 1.0.0 | Primeira versão estável, com autenticação, controle de chamados e dashboard administrativo. |
+
+A versão atual do sistema é **1.0.0**.
+
+## Aplicação publicada
+
+**Acesse:** [INSERIR LINK DO DEPLOY]
+
+A aplicação possui cadastro público, permitindo que qualquer pessoa crie uma conta e acesse as funcionalidades.
+
+### Credenciais de demonstração
+
+Utilize uma conta de demonstração para acessar a aplicação:
+
+- **E-mail:** INSERIR E-MAIL
+- **Senha:** INSERIR SENHA
+
+## Como executar localmente
+
+### Pré-requisitos
+
+- Java 21 ou superior.
+- MongoDB Atlas.
+- Git.
+
+### Instalação
+
+1. Clone o repositório:
+
+```bash
+git clone INSERIR_LINK_DO_GITHUB
 ```
 
-O Login-Seguro e o microserviço devem utilizar o mesmo MongoDB, o banco `login_seguro` e a mesma configuração de sessões.
+2. Acesse a pasta do projeto:
 
-Inicie o Login-Seguro na porta `8080`. Depois, execute este projeto:
+```bash
+cd chamados-thindesk
+```
+
+3. Configure as variáveis de ambiente no arquivo `.env`:
+
+```properties
+MONGODB_URI=SUA_URI_DO_MONGODB
+ADMIN_EMAIL=EMAIL_DO_ADMINISTRADOR
+ADMIN_PASSWORD=SENHA_DO_ADMINISTRADOR
+```
+
+4. Execute a aplicação:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
-No Windows:
+No Windows, utilize:
 
-```powershell
-.\mvnw.cmd spring-boot:run
+```bash
+mvnw.cmd spring-boot:run
 ```
 
-O microserviço estará disponível em `http://localhost:8081`.
+5. Acesse a aplicação pelo navegador:
 
-É preciso usar os endpoints do login-seguro para logar e utilizar o csrf token gerado para
-as sessões serem reconhecidas.
-
-Exemplo:
-
-1. Faça `GET http://localhost:8080/login` e copie o valor do campo `_csrf` do HTML.
-2. Faça `POST http://localhost:8080/login`, usando `x-www-form-urlencoded` com `email`, `password` e `_csrf`.
-3. Após o login, faça novamente o GET de `/login` e copie o novo `_csrf`.
-4. Nas requisições POST e PUT do microserviço, envie esse valor no header `X-CSRF-TOKEN`.
-
-## Endpoints
-
-URL base: `http://localhost:8081`
-
-| Método | Rota | Função |
-|---|---|---|
-| POST | `/api/chamados` | Abrir chamado |
-| GET | `/api/chamados/usuario/{id}` | Listar chamados do usuário |
-| GET | `/api/chamados/{id}` | Consultar chamado Individual |
-| PUT | `/api/chamados/{id}/resolver` | Resolver chamado |
-
-Envie os corpos em JSON.
-
-**Abertura:**
-
-```json
-{
-  "titulo": "Impressora com problema",
-  "descricao": "Não imprime os documentos enviados."
-}
+```text
+http://localhost:8080
 ```
-
-O sistema registra automaticamente o usuário autenticado, a data de abertura e o status `ABERTO`. Retorna `201`.
-
-**Resolução — exige perfil `UsuarioTecnico`:**
-
-```json
-{
-  "solucao": "Driver reinstalado e impressão testada."
-}
-```
-
-O sistema registra a solução, a data de resolução e o status `RESOLVIDO`. Retorna `200`.
-
-## Regras
-
-- Título, descrição e solução são obrigatórios nas respectivas operações.
-- O usuário consulta apenas seus próprios chamados.
-- Somente o técnico pode resolver chamados.
-- Chamados resolvidos não podem ser resolvidos novamente.
-- Os dados são persistidos em `login_seguro`, na coleção `chamados`.
-
-Erros previstos: `400` para dados inválidos, `401` para falta de autenticação, `403` para acesso negado ou CSRF inválido, `404` para chamado inexistente e `409` para chamado já resolvido.
